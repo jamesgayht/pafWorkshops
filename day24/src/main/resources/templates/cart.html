@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Shopping Cart</h1>
+    <form method="POST" action="/cart">
+        <table>
+            <tr>
+                <td>Item</td>
+                <td><input type="text" name="item" required="true"></td>
+            </tr>
+            <tr>
+                <td>Quantity</td>
+                <td><input type="number" name="quantity" min="1" required="true"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button type="submit">Submit</button></td>
+            </tr>
+        </table>
+    </form>
+
+    <h1>Your cart items:</h1>
+    <!-- <span data-th-if="${orderItems.empty}">Your cart is empty</span> -->
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr  data-th-each="item:${orderItems}">
+                <td><span data-th-text="${item.description}"></span></td>
+                <td><span data-th-text="${item.quantity}"></span></td>
+            </tr>
+        <form action="/checkout" method="POST">
+            <tr>
+                <td></td>
+                <td><button type="submit">Checkout</button></td>
+            </tr>
+        </form>
+        </tbody>
+    </table>
+</body>
+</html>

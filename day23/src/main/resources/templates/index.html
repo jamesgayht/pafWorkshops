@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Select Beer Styles:</h1>
+    <form action="/search" method="GET">
+        <table>
+            <tr>
+                <td>Styles:</td>
+                <td>
+                    <select type="text" name="style">
+                        <!-- <span data-th-each="style:${stylesList}"> -->
+                        <span data-th-each="style:${beerStyles}">
+                            <option data-th-value="${style.styleId}" data-th-text="${style.styleName}"></option>
+                        </span>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Search</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
