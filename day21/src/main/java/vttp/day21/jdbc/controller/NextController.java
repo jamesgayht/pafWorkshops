@@ -13,24 +13,21 @@ import vttp.day21.jdbc.model.Book;
 import vttp.day21.jdbc.repository.BookRepository;
 
 @Controller
-@RequestMapping(path = "/search")
-public class SearchController {
-    
-    @Autowired
-private BookRepository bookRepo; 
+@RequestMapping(path = "/next")
+public class NextController {
 
-    // GET /search?bookName=jack&resultCount=10
+    @Autowired
+    private BookRepository bookRepo; 
+    
     @GetMapping
-    public String search(@RequestParam String bookName, @RequestParam Integer resultCount, Model model) {
-        
-        List<Book> books = bookRepo.getBooksByTitle(bookName, resultCount);
-        
+    public String searchNext(@RequestParam String bookName, @RequestParam Integer resultCount, @RequestParam Integer offset, Model model) {
+        List<Book> books = bookRepo.getBooksByTitleNext(bookName, resultCount, offset);
+
         // populate the model with the bindings
         model.addAttribute("bookName", bookName);
         model.addAttribute("resultCount", resultCount);
         model.addAttribute("books", books);
-        model.addAttribute("hasResult", books.size()>0);
-        return "search-results";
+        model.addAttribute("hasResult", books.size()>0); 
+        return "next";
     }
-
 }

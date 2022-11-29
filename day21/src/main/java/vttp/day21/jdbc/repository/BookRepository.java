@@ -38,4 +38,15 @@ public class BookRepository {
 
         return results;
     }
+
+    public List<Book> getBooksByTitleNext(String bookName, Integer limit, Integer offset) {
+        // perform the query 
+        final SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_SELECT_BOOKS_BY_TITLE_NEXT, "%%%s%%".formatted(bookName), limit, offset); 
+
+        final List<Book> results = new LinkedList<>(); 
+        while(rs.next())
+            results.add(Book.create(rs));
+
+        return results;
+    }
 }

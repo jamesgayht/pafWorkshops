@@ -7,17 +7,18 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Your searched title "<code data-th-text="${bookName}"></code>"</h1>
+    <h1>
+        Your searched title "<code data-th-text="${bookName}"></code>"
+    </h1>
     <h2>Number of books returned <span data-th-text="${resultCount}"></span></h2>
     <h4>Search <a href="/">again</a></h4>
-
     <form action="/next" method="GET">
         <h4><button type="submit">Next</button></h4>
     </form>
 
-    <h3 data-th-if="${!hasResult}">Your search produced no results</h3>
+    <h3 data-th-if="${!hasResults}">Your search produced no results.</h3>
 
-    <table data-th-if="${hasResult}">
+    <table data-th-if="${hasResults}">
         <tr data-th-each="b: ${books}">
             <td>
                 <img data-th-src="${b.imageUrl}" alt="">
