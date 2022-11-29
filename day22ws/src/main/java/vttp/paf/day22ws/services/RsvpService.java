@@ -17,4 +17,10 @@ public class RsvpService {
         System.out.printf("Insert count: %d/n", count);
         return count > 0; 
     }
+
+    public boolean updateRsvp(String oldEmail, String newEmail) {
+        int count = rsvpRepo.updateRsvp(newEmail, oldEmail);
+        System.out.printf("count = %d\n", count);
+        return count > 0; 
+    }
 }

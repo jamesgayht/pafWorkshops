@@ -39,7 +39,21 @@ public class RsvpRepo {
         return rsvps;
     }
 
+    public List<Rsvp> getRsvpByEmail(String email) {
+        final SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_SELECT_RSVP_BY_EMAIL, email); 
+        List<Rsvp> rsvps = new LinkedList<>(); 
+
+        while(rs.next())
+            rsvps.add(Rsvp.createRsvp(rs));
+
+        return rsvps; 
+    }
+
     public Integer createRsvp(Rsvp rsvp) throws Exception {
         return jdbcTemplate.update(SQL_INSERT_RSVP, rsvp.getName(), rsvp.getEmail(), rsvp.getPhone(), rsvp.getConfirmationDate(), rsvp.getComments()); 
+    }
+
+    public Integer updateRsvp(String oldEmail, String newEmail) {
+        return jdbcTemplate.update(SQL_UPDATE_RSVP_BY_EMAIL, newEmail, oldEmail); 
     }
 }

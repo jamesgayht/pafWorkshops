@@ -81,7 +81,9 @@ public class RsvpRESTController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createNewRsvp(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("phone") String phone, @RequestParam("confirmationDate") String confirmationDate, @RequestParam("comments") String comments) throws ParseException {
+    public ResponseEntity<String> createNewRsvp(@RequestParam("name") String name, @RequestParam("email") String email,
+            @RequestParam("phone") String phone, @RequestParam("confirmationDate") String confirmationDate,
+            @RequestParam("comments") String comments) throws ParseException {
 
         System.out.printf("name: %s\nemail: %s\nphone: %s\n", name, email, phone);
 
@@ -109,12 +111,41 @@ public class RsvpRESTController {
                 .body(name + " RSVP created successfully");
     }
 
-    @PutMapping("{email}")
-    public ResponseEntity<String> updateRsvp(@PathVariable String email) {
+    @PutMapping("")
+    public ResponseEntity<String> updateRsvp(@RequestParam("oldEmail") String oldEmail,
+            @RequestParam("newEmail") String newEmail) {
 
-        Rsvp rsvp = new Rsvp();
+        // check if the email exists
+        List<Rsvp> rsvps = rsvpRepo.getRsvpByEmail(oldEmail);
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
-        return null;
+        for (Rsvp r : rsvps)
+            arrayBuilder.add(r.toJSON());
+
+        JsonArray result = arrayBuilder.build();
+
+        if(result.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("Could not find any RSVPs under the email " + oldEmail); 
+        }
+
+        // update the email address 
+        try {
+            if (!rsvpService.updateRsvp(newEmail, oldEmail))
+                System.out.println(">>>> ERROR! RSVP not updated <<<<<<");
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_IMPLEMENTED)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(e.toString());
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(newEmail + " has been updated as your new email address.");
     }
 
 }
