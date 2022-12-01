@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Orders</title>
+</head>
+<body>
+    <h1>Your orders</h1>
+    <h3>Search <a href="/">again</a></h3>
+    
+    <table data-th-each="o:${orders}"
+            style="border: 1px black solid; padding: 8px; margin-bottom: 2px;">
+        <tr >
+            <td>Order Id:</td>
+            <td data-th-text="${o.orderId}"></td>
+        </tr>
+        
+        <tr >
+            <td>Order Date:</td>
+            <td data-th-text="${o.orderDate}"></td>
+        </tr>
+        <tr>
+            <td>Customer Id:</td>
+            <td data-th-text="${o.customerId}"></td>
+        </tr>
+        <tr>
+            <td>Product Id:</td>
+            <td data-th-text="${o.productId}"></td>
+        </tr>
+        <tr>
+            <td>Total Price:</td>
+            <td data-th-text="${o.totalPrice}"></td>
+        </tr>
+        <tr>
+            <td>Cost Price:</td>
+            <td data-th-text="${o.costPrice}"></td>
+        </tr>
+    </table>
+
+</body>
+</html>
