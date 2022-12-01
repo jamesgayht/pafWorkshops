@@ -85,4 +85,5 @@ public class Rsvp {
                 .add("comments", getComments())
                 .build();
     }
+    
 }

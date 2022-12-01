@@ -56,4 +56,13 @@ public class RsvpRepo {
     public Integer updateRsvp(String oldEmail, String newEmail) {
         return jdbcTemplate.update(SQL_UPDATE_RSVP_BY_EMAIL, newEmail, oldEmail); 
     }
+
+    public long getRsvpCount() {
+        final SqlRowSet rs = jdbcTemplate.queryForRowSet(SQL_GET_RSVP_COUNT);
+        if(rs.next())
+            return rs.getLong("count");
+        
+        System.out.println("here gonna return 0");
+        return 0;
+    }
 }
