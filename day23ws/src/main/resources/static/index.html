@@ -8,7 +8,8 @@
 </head>
 <body>
     <h1>Search for your orders here!</h1>
-    <form action="/order/total" method="GET">
+    <form id="index_form" onsubmit="appendToUrl()">
+    <!-- <form action="/order/total" method="GET"> -->
         <table>
             <tr>
                 <td>Order ID:</td>
@@ -16,9 +17,11 @@
             </tr>
             <tr>
                 <td></td>
-                <td><button type="submit">Search</button></td>
+                <td><button type="submit" value="Search">Search</button></td>
             </tr>
         </table>
     </form>
+
+<script src="function.js"></script>
 </body>
 </html>

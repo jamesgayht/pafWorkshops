@@ -20,9 +20,12 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping
-    public String getOrders(@RequestParam Integer orderId, Model model) {
+    @GetMapping(path = "/{orderId}")
+    public String getOrders(@PathVariable Integer orderId, Model model) {
+    // public String getOrders(@RequestParam Integer orderId, Model model) {
         
+        // model.addAttribute("orderId", orderId);
+
         List<Order> orders = orderService.getOrders(orderId);
 
         model.addAttribute("orders", orders);

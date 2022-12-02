@@ -9,9 +9,14 @@
 <body>
     <h1>Your orders</h1>
     <h3>Search <a href="/">again</a></h3>
+
+    <div data-th-if="${#lists.isEmpty(orders)}">
+        <h2>There are no orders with that ID.</h2>
+    </div>
     
-    <table data-th-each="o:${orders}"
-            style="border: 1px black solid; padding: 8px; margin-bottom: 2px;">
+    <table data-th-each="o:${orders}" data-th-if="${#lists.size(orders) > 0}"
+    style="border: 1px black solid; padding: 8px; margin-bottom: 2px;">
+
         <tr >
             <td>Order Id:</td>
             <td data-th-text="${o.orderId}"></td>
@@ -37,6 +42,7 @@
             <td>Cost Price:</td>
             <td data-th-text="${o.costPrice}"></td>
         </tr>
+        
     </table>
 
 </body>
