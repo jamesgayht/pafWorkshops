@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DZ</title>
+</head>
+<body>
+    <h1>
+        Your searched keywords and rating: <span data-th-text="${keywords}"></span> & <span data-th-text="${score}"></span>
+    </h1>
+    <h3>Search <a href="/">again</a></h3>
+
+    <h2>Results</h2>
+    <table border="1" data-th-each="c:${comments}">
+        <tr>
+            <td>User:</span></td>
+            <td><span data-th-text="${c.user}"></span></td>
+        </tr>
+        <tr>
+            <td>Rating:</td>
+            <td><span data-th-text="${c.rating}"></span></td>
+        </tr>
+        <tr>
+            <td>Comments:</td>
+            <td><span data-th-text="${c.cText}"></span></td>
+        </tr>
+        <tr>
+            <td>Score:</td>
+            <td><span data-th-text="${c.score}"></span></td>
+        </tr>
+        <br>
+    </table>
+</body>
+</html>

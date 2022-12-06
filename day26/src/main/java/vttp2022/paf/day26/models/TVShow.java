@@ -60,7 +60,7 @@ public class TVShow {
         tvShow.setName(d.getString("name"));
         tvShow.setSummary(d.getString("summary"));
         
-        Document imageDoc = d.get("image", Document.class); 
+        Document imageDoc = d.get("imageC", Document.class); 
         tvShow.setImage(imageDoc.get("original").toString());
 
         Document ratingDoc = d.get("rating", Document.class);
