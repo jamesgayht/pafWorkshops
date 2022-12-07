@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DZ</title>
+</head>
+<body>
+    <h1>Your search results for <span data-th-text="${name}"></span></h1>
+    <h3>Search <a href="/">again</a></h3>
+    <table border="1">
+        <tr>
+            <td>
+                <div class="top">
+                    <h1 data-th-text="${game.name}"></h1>
+                    <div>
+                        <img data-th-src="${game.image}" alt="">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr data-th-each="bc: ${game.bgComments}">
+            <td><span data-th-text="${bc.user}"></span></td>
+            <td><span data-th-text="${bc.rating}"></span></td>
+            <td><span data-th-text="${bc.text}"></span></td>
+        </tr>
+    </table>
+</body>
+</html>

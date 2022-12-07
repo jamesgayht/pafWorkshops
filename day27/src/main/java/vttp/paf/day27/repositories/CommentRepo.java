@@ -74,6 +74,8 @@ public class CommentRepo {
         for(Document d:results)
             comments.add(Comment.createComment(d));
 
+        
+
         return comments; 
 
         // using stream example 
