@@ -34,7 +34,7 @@ public class TVShowRepository {
      * db.tvshows.find({genres: "Action"}, {name:1, summary:1, "rating.average":1, "image.original":1, _id:0}).limit(10).
      */
     public List<TVShow> findTvShowsByGenre(String genre) {
-        Criteria c = Criteria.where("genre").in(genre);
+        Criteria c = Criteria.where("genres").is(genre);
         Query query = Query.query(c).limit(10).skip(0); 
         List<Document> results = mongoTemplate.find(query, Document.class, C_TV_SHOWS);
 
