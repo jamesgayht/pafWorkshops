@@ -1,5 +1,6 @@
 package vttp.paf.day29.models;
 
+import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonObject;
 
@@ -54,6 +55,28 @@ public class MarvelCharacter {
     @Override
     public String toString() {
         return "MarvelCharacter {id=%d, name=%s, description=%s, image=%s, details=%s\n}".formatted(id, name, description, image, details); 
+    }
+
+    public JsonObject toJson() {
+        return Json.createObjectBuilder()
+                .add("id", id)
+                .add("name", name)
+                .add("description", description)
+                .add("image", image)
+                .add("details", details)
+                .build();
+    }
+
+    public static MarvelCharacter fromCache (JsonObject doc) {
+        MarvelCharacter marvelCharacter = new MarvelCharacter(); 
+
+        marvelCharacter.setId(doc.getInt("id"));
+        marvelCharacter.setName(doc.getString("name"));
+        marvelCharacter.setDescription(doc.getString("description"));
+        marvelCharacter.setImage(doc.getString("image"));
+        marvelCharacter.setDetails(doc.getString("details"));
+
+        return marvelCharacter; 
     }
 
     public static MarvelCharacter createJson(JsonObject o) {
