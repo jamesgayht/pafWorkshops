@@ -35,9 +35,9 @@ public class BoardgameComments {
     public static BoardgameComments create(Document d) {
         BoardgameComments boardgameComments = new BoardgameComments(); 
 
-        boardgameComments.setUser(d.getString("name"));
+        boardgameComments.setUser(d.getString("user"));
         boardgameComments.setRating(d.getInteger("rating"));
-        boardgameComments.setText(d.getString("text"));
+        boardgameComments.setText(d.getString("c_text"));
 
         System.out.println("rating >>>> " + boardgameComments.getRating());
 

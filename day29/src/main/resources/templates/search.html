@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marvel Characters Searcher</title>
+</head>
+<h1>Your searched keyword: <span data-th-text="${character}"></span></h1>
+<h3>Search <a href="/">again</a></h3>
+<body>
+    <table border="1" data-th-each="c: ${characters}">
+        <tr>
+            <div><img data-th-src="${c.image}" alt="Character" width="300px" height="300px"></div>
+        </tr>
+        <tr>
+            <td>id:</td>
+            <td><span data-th-text="${c.id}"></span></td>
+        </tr>
+        <tr>
+            <td>name:</td>
+            <td><span data-th-text="${c.name}"></span></td>
+        </tr>
+        <tr>
+            <td>description:</td>
+            <td><span data-th-text="${c.description}"></span></td>
+        </tr>
+        <tr>
+            <td>details:</td>
+            <td><a data-th-href="${c.details}" target="_blank" ><span data-th-text="${c.details}"></span></a></td>
+        </tr>
+    </table>
+    <br>
+</body>
+</html>
