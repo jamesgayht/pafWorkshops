@@ -39,9 +39,9 @@ public class GamesResult {
                     .build(); 
     }
 
-    public static GamesResult createGamesHighest () {
+    public static GamesResult createGamesResult (String order) {
         GamesResult gamesResult = new GamesResult(); 
-        gamesResult.setRatingOrder("highest");
+        gamesResult.setRatingOrder(order);
         gamesResult.setTimestamp(LocalDateTime.now());
         return gamesResult; 
     }

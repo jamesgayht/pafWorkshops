@@ -6,11 +6,13 @@ import java.util.List;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.GroupOperation;
+import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
@@ -59,7 +61,7 @@ public class GamesResultRepo {
      * );
      */
 
-    public GamesResult findGamesByUserRatingHighestToLowest(String user) {
+    public GamesResult findGamesByUserAndRating(String order, String user) {
         // $match the username
         MatchOperation matchUser = Aggregation.match(Criteria.where("user").is(user));
         // MatchOperation matchUser =
@@ -81,8 +83,20 @@ public class GamesResultRepo {
         // "games");
 
         // $sort
-        SortOperation sortByRating = Aggregation
-                .sort(Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "rating"));
+
+        SortOperation sortByRating; 
+
+        if (order.equals("highest")) {
+            sortByRating = Aggregation
+                    .sort(Sort.by(org.springframework.data.domain.Sort.Direction.DESC, "rating"));
+        } 
+        else if(order.equals("lowest")){
+            sortByRating = Aggregation
+                    .sort(Sort.by(org.springframework.data.domain.Sort.Direction.ASC, "rating"));
+        } 
+        else {
+            return null; 
+        }
 
         // create the pipeline
         Aggregation pipeline = Aggregation.newAggregation(matchUser, lookupGames, unwindGames, sortByRating);
@@ -90,7 +104,7 @@ public class GamesResultRepo {
         // query the collection
         AggregationResults<Document> results = mongoTemplate.aggregate(pipeline, C_COMMENTS, Document.class);
 
-        System.out.println("AGGREGATION RESULTS >>>> " + results.iterator().next());
+        System.out.println("AGGREGATION RESULTS >>>> " + results.getMappedResults());
 
         List<Games> games = new LinkedList<>();
 
@@ -100,14 +114,79 @@ public class GamesResultRepo {
         for (Document d : documents) {
             // games = d.getList("games", Document.class).stream().map(g ->
             // Games.createGames(g, user)).toList();
-            Document gameResult = d.get("games", Document.class); 
+            Document gameResult = d.get("games", Document.class);
             games.add(Games.createGames(d, gameResult));
         }
 
-        GamesResult gamesResult = GamesResult.createGamesHighest();
+        GamesResult gamesResult = GamesResult.createGamesResult(order);
         gamesResult.setGames(games);
 
         return gamesResult;
     }
 
+    /*
+     * db.comments.aggregate(
+     * {$lookup:{from:"games", foreignField:"gid", localField:"gid", as:"games"}},
+     * {$unwind:"games"},
+     * {$sort:{rating:1}},
+     * {$limit:10}
+     * );
+     */
+
+    public GamesResult findGamesByRatingOrder (String order) {
+        // $match
+
+        MatchOperation matchRating;
+
+        if(order.equals("lowest")) {
+            matchRating = Aggregation.match(Criteria.where("rating").is(1));
+        } 
+        else if(order.equals("highest")) {
+            matchRating = Aggregation.match(Criteria.where("rating").is(10));
+        }
+        else {
+            return null;
+        }
+
+
+        // $lookup
+        LookupOperation lookupGames = Aggregation.lookup(C_GAMES, "gid", "gid", "games");
+
+        // $unwind
+        AggregationOperation unwindGames = Aggregation.unwind("games"); 
+
+        // $sort
+        SortOperation sortByRating; 
+
+        if(order.equals("lowest")) {
+            sortByRating = Aggregation.sort(Sort.by(Direction.ASC, "rating")); 
+        }
+        else {
+            sortByRating = Aggregation.sort(Sort.by(Direction.DESC, "rating")); 
+        }
+
+        // $limit
+        LimitOperation limitOperation = Aggregation.limit(10); 
+        
+        // create the pipeline
+        Aggregation pipeline = Aggregation.newAggregation(matchRating, lookupGames, unwindGames, sortByRating, limitOperation); 
+
+        // query the collection 
+        AggregationResults<Document> results = mongoTemplate.aggregate(pipeline, C_COMMENTS, Document.class); 
+
+        System.out.println("RESULTS >>>> " + results.getMappedResults());
+
+        List<Games> games = new LinkedList<>(); 
+        List<Document> documents = results.getMappedResults(); 
+
+        for(Document d: documents) {
+            Document gameResult = d.get("games", Document.class); 
+            games.add(Games.createGames(d, gameResult));
+        }
+
+        GamesResult gamesResult = GamesResult.createGamesResult(order); 
+        gamesResult.setGames(games);
+
+        return gamesResult;
+    }
 }
