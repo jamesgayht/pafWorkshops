@@ -1,13 +1,12 @@
 package vttp.paf.day28ws.models;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.bson.Document;
 
 import jakarta.json.Json;
-import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonObjectBuilder;
@@ -45,7 +44,7 @@ public class Game {
                 .add("url", getUrl())
                 .add("image", getImage())
                 .add("reviews", arrayBuilder)
-                .add("timestamp", LocalDate.now().toString())
+                .add("timestamp", LocalDateTime.now().toString())
                 .build();
     }
                 

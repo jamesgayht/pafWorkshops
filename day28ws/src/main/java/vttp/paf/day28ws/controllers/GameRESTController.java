@@ -15,6 +15,7 @@ import jakarta.json.JsonObject;
 import vttp.paf.day28ws.models.Game;
 import vttp.paf.day28ws.repositories.GameRepo;
 
+// returns a single game with all its corresponding reviews
 @RestController 
 @RequestMapping(path = "/game", produces = MediaType.APPLICATION_JSON_VALUE)
 public class GameRESTController {
