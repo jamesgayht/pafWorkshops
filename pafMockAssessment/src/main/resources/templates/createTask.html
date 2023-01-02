@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+</head>
+
+<body>
+    <h1>Your task has been created!</h1>
+    <form action="/submit" method="POST">
+        <table border="1">
+            <tr>
+                <td>Username:</td>
+                <td data-th-text="${username}"></td>
+            </tr>
+            <tr>
+                <td><button type="submit">Submit</button></td>
+                <td><button type="submit">Add Todo</button></td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <th>Priority</th>
+                <th>Due Date</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td><input type="text" name="description"></td>
+                    <td>
+                        <select name="priority">
+                            <option value="LOW">LOW</option>
+                            <option value="MED" selected>MED</option>
+                            <option value="HIGH">HIGH</option>
+                        </select>
+                    </td>
+                    <td><input type="date" name="dueDate"></td>
+                </tr>
+            </tbody>
+        </table>
+    </form>
+    <div>
+        <h1>Tasks added</h1>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-th-text="${task.description}"></td>
+                    <td data-th-text="${task.priority}"></td>
+                    <td data-th-text="${task.dueDate}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
