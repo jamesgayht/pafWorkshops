@@ -13,7 +13,7 @@ public class TaskRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate; 
 
-    public Integer createTask(Task task) {
+    public Integer insertTask(Task task) {
         return jdbcTemplate.update(SQL_INSERT_TASK, task.getDescription(), task.getPriority().toString(), task.getDueDate(), task.getUserId());
     }
 

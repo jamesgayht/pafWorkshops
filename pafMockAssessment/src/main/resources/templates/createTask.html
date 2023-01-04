@@ -10,14 +10,13 @@
 
 <body>
     <h1>Your task has been created!</h1>
-    <form action="/submit" method="POST">
+    <form action="/task" method="POST">
         <table border="1">
             <tr>
                 <td>Username:</td>
-                <td data-th-text="${username}"></td>
+                <td><input type="text" name="username" data-th-value="${username}" readonly></td>
             </tr>
             <tr>
-                <td><button type="submit">Submit</button></td>
                 <td><button type="submit">Add Todo</button></td>
             </tr>
             <tr>
@@ -27,38 +26,44 @@
             </tr>
             <tbody>
                 <tr>
-                    <td><input type="text" name="description"></td>
+                    <td><input type="text" name="description" required></td>
                     <td>
-                        <select name="priority">
+                        <select name="priority" required>
                             <option value="LOW">LOW</option>
                             <option value="MED" selected>MED</option>
                             <option value="HIGH">HIGH</option>
                         </select>
                     </td>
-                    <td><input type="date" name="dueDate"></td>
+                    <td><input type="date" name="dueDate" required></td>
                 </tr>
             </tbody>
         </table>
     </form>
+
+    <form action="/submit" method="POST">
     <div>
         <h1>Tasks added</h1>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Description</th>
-                    <th>Priority</th>
-                    <th>Due Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td data-th-text="${task.description}"></td>
-                    <td data-th-text="${task.priority}"></td>
-                    <td data-th-text="${task.dueDate}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Priority</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-th-each="t:${tasks}">
+                        <td data-th-text="${t.description}"></td>
+                        <td data-th-text="${t.priority}"></td>
+                        <td data-th-text="${t.dueDate}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" align="center"><button type="submit">Submit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </form>
 </body>
 
 </html>

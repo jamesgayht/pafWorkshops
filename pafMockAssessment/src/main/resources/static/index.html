@@ -10,13 +10,12 @@
     <h1>Login to manage your tasks</h1>
     <div>
         <form method="POST" action="/task">
-            <table>
+            <table border="1">
                 <tr>
                     <td>Username:</td>
                     <td><input type="text" name="username"></td>
                 </tr>
                 <tr>
-                    <td><button type="submit">Submit</button></td>
                     <td><button type="submit">Add Todo</button></td>
                 </tr>
                 <thead>
@@ -28,15 +27,15 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input type="text" name="description"></td>
+                        <td><input type="text" name="description" required></td>
                         <td>
-                            <select name="priority">
+                            <select name="priority" required>
                                 <option value="LOW">LOW</option>
                                 <option value="MED" selected>MED</option>
                                 <option value="HIGH">HIGH</option>
                             </select>
                         </td>
-                        <td><input type="date" name="dueDate"></td>
+                        <td><input type="date" name="dueDate" required></td>
                     </tr>
                 </tbody>
             </table>

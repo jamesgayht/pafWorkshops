@@ -41,13 +41,13 @@ public class GamesRESTController {
     @GetMapping(path = "/{order}")
     public ResponseEntity<String> getGamesByLowest(@PathVariable String order) {
 
-        if(gamesResultRepo.findGamesByRatingOrderProper(order) == null) {
+        if(gamesResultRepo.findGamesByRatingOrderFinal(order) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .body("Unable to process this request."); 
         }
         else {
-            GamesResult gamesResult = gamesResultRepo.findGamesByRatingOrderProper(order);
+            GamesResult gamesResult = gamesResultRepo.findGamesByRatingOrderFinal(order);
             
             JsonObject results = gamesResult.toJson(); 
     

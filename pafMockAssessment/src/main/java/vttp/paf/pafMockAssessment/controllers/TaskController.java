@@ -31,52 +31,57 @@ public class TaskController {
     private TaskRepository taskRepository;
 
     @PostMapping
-    public String postTask(@RequestBody MultiValueMap<String, String> form, Model model) throws Exception {
+    public String postTask(@RequestBody MultiValueMap<String, String> form, Model model, HttpSession httpSession)
+            throws Exception {
 
         User user = new User();
 
-        // @SuppressWarnings("unchecked")
-        // List<Task> tasks = (List<Task>)httpSession.getAttribute("task");
+        @SuppressWarnings("unchecked")
+        List<Task> tasks = (List<Task>) httpSession.getAttribute("task");
 
         if (userService.findUserByUsername(form.getFirst("username")).equals(Optional.empty())) {
             // userService.insertUser(user);
             String errorMessage = "Something went wrong while attempting to create this task. Please try again.";
-            
-            model.addAttribute("errorMessage", errorMessage);
-            
-            return "error"; 
 
+            model.addAttribute("errorMessage", errorMessage);
+
+            return "error";
         } 
         else {
-            // if(null == tasks) {
-            //     System.out.println("This is a new session.");
-            //     System.out.printf("session id = %s\n", httpSession.getId());
-            //     tasks = new LinkedList<>(); 
-            //     httpSession.setAttribute("task", tasks);
-            // }   
+            if (null == tasks) {
+                System.out.println("This is a new session.");
+                System.out.printf("session id = %s\n", httpSession.getId());
+                tasks = new LinkedList<>();
+                httpSession.setAttribute("task", tasks);
+            }
 
-            Optional<User> opt = userService.findUserByUsername(form.getFirst("username")); 
-            user = opt.get(); 
+            Optional<User> opt = userService.findUserByUsername(form.getFirst("username"));
+            user = opt.get();
 
             Task task = new Task();
             task.setDescription(form.getFirst("description"));
             task.setPriority(form.getFirst("priority"));
-    
+
             String dateStr = form.getFirst("dueDate");
             System.out.println("Due date >>>> " + dateStr);
             Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
             task.setDueDate(date);
-    
+
             task.setUserId(user.getUserId());
 
-            Integer count = taskRepository.createTask(task);
-            System.out.printf("Task >>> %s, count >>> %d\n", task.toString(), count);
-            
+            tasks.add(task);
+
+            for (Task t : tasks) {
+                System.out.println("TASK >>> " + t.toString());
+            }
+
+            // Integer count = taskRepository.insertTask(task);
+            // System.out.printf("Task >>> %s, count >>> %d\n", task.toString(), count);
+
             model.addAttribute("username", form.getFirst("username"));
-            model.addAttribute("task", task);
+            model.addAttribute("tasks", tasks);
 
             return "createTask";
         }
-
     }
 }

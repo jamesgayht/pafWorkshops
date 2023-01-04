@@ -12,6 +12,18 @@ public class Games {
 
 
 
+    public static Games createGames(Document d) {
+        Games games = new Games(); 
+        games.setGid(d.getInteger("gid"));
+        games.setName(d.getString("name"));
+        games.setRating(d.getInteger("rating"));
+        games.setUser(d.getString("user"));
+        games.setComment(d.getString("c_text"));
+        games.setReviewId(d.getString("c_id"));
+
+        return games;
+    }
+
     public static Games createGames(Document d, Document doc) {
         Games games = new Games(); 
         games.setGid(d.getInteger("gid"));
