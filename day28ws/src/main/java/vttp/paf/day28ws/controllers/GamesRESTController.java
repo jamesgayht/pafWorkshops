@@ -39,7 +39,7 @@ public class GamesRESTController {
     }
 
     @GetMapping(path = "/{order}")
-    public ResponseEntity<String> getGamesByLowest(@PathVariable String order) {
+    public ResponseEntity<String> getGamesByRatingOrder(@PathVariable String order) {
 
         if(gamesResultRepo.findGamesByRatingOrderFinal(order) == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)

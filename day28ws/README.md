@@ -33,3 +33,15 @@ System.out.println(result.toJson());
 }
 
 mongoClient.close();
+
+
+db.comments.aggregate(
+    {$lookup: {from:"games", foreignField:"gid", localField:"gid", as:"games"}},
+    {$sort:{gid:1, rating:-1}},
+//    {$match:{user:{$regex:"the", $options:"i"}}},
+    {$group:{_id:{gid:"$gid", name:"$games.name"}, highest:{$first:"$$ROOT"}}},
+    {$sort:{"_id.gid":1}},
+
+//    {$project: {_id:1, name:"$games.name", rating:"$highest.rating", user:"$highest.user", comment:"$highest.c_text", review_id:"$highest.c_id"}}
+
+);

@@ -1,6 +1,7 @@
 package vttp.paf.day28ws.models;
 
 import org.bson.Document;
+import org.springframework.data.mongodb.core.aggregation.ConvertOperators.ToString;
 
 public class Games {
     private int gid;
@@ -9,8 +10,6 @@ public class Games {
     private String user;
     private String comment;
     private String reviewId;
-
-
 
     public static Games createGames(Document d) {
         Games games = new Games(); 
@@ -34,6 +33,11 @@ public class Games {
         games.setReviewId(doc.getString("c_id"));
 
         return games;
+    }
+
+    @Override
+    public String toString() {
+        return "NAME >> %s, USER >>> %s, COMMENT >> %s, REVIEW_ID >> %s\n".formatted(name, user, comment, reviewId);
     }
 
     public int getGid() {

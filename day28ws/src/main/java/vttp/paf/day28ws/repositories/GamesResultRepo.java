@@ -17,7 +17,10 @@ import org.springframework.data.mongodb.core.aggregation.GroupOperation;
 import org.springframework.data.mongodb.core.aggregation.LimitOperation;
 import org.springframework.data.mongodb.core.aggregation.LookupOperation;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
+import org.springframework.data.mongodb.core.aggregation.ObjectOperators;
 import org.springframework.data.mongodb.core.aggregation.ProjectionOperation;
+import org.springframework.data.mongodb.core.aggregation.ReplaceRootOperation;
+import org.springframework.data.mongodb.core.aggregation.ReplaceWithOperation;
 import org.springframework.data.mongodb.core.aggregation.SortOperation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -276,19 +279,20 @@ public class GamesResultRepo {
     }
 
     /*
-     * db.comments.aggregate(
-     * {$sort:{gid: 1, rating: -1}},
-     * {$group:{_id:"$gid", best_rating:{$first:"$$ROOT"}}},
-     * {$replaceWith:"$best_rating"},
-     * {$sort:{gid:1}},
-     * {$lookup: {from:"games", foreignField:"gid", localField:"gid", as:"games"}},
-     * {$unwind:"$games"},
-     * {$project:{_id:0, _id:"$gid", name:"$games.name", rating:1, user:1,
-     * comment:"$c_text", review_id:"c_id"}}
-     * );
+      db.comments.aggregate(
+      {$sort:{gid: 1, rating: -1}},
+      {$group:{_id:"$gid", highest:{$first:"$$ROOT"}}},
+      {$replaceRoot:{newRoot:"$highest"}},
+      {$sort:{gid:1}},
+      {$lookup: {from:"games", foreignField:"gid", localField:"gid", as:"games"}},
+      {$unwind:"$games"},
+      {$project:{_id:0, _id:"$gid", name:"$games.name", rating:1, user:1, comment:"$c_text", review_id:"c_id"}}
+      );
      */
 
     public GamesResult findGamesByRatingOrderFinal(String order) {
+
+        // MatchOperation matchUser = Aggregation.match(Criteria.where("user").regex("the", "i"));
         
         // $sort
         SortOperation sortByRating;
@@ -318,9 +322,22 @@ public class GamesResultRepo {
             return null;
         }
 
+        // $replaceRoot
+        AggregationOperation replaceWithRoot;
+        if(order.equals("highest")) {
+            replaceWithRoot = Aggregation.replaceRoot("highest");
+        }
+        else if(order.equals("lowest")) {
+            replaceWithRoot = Aggregation.replaceRoot("lowest");
+        }
+        else {
+            System.out.println("Something went wrong in the if clause P2");
+            return null; 
+        }
+
         SortOperation sortByGid = Aggregation.sort(Sort.by(Direction.ASC, "gid"));
 
-        LookupOperation lookupGames = Aggregation.lookup(C_GAMES, "gid", "gid", C_GAMES);
+        LookupOperation lookupGames = Aggregation.lookup(C_GAMES, "gid", "gid", "games");
 
         AggregationOperation unwindGames = Aggregation.unwind("games");
 
@@ -332,19 +349,18 @@ public class GamesResultRepo {
                                             .and("c_id").as("c_id")
                                             .andExclude("_id");
 
-        Aggregation pipeline = Aggregation.newAggregation(sortByRating, groupByGame, sortByGid, lookupGames, unwindGames, selectFields); 
+        Aggregation pipeline = Aggregation.newAggregation(sortByRating, groupByGame, replaceWithRoot, sortByGid, lookupGames, unwindGames, selectFields); 
 
         AggregationResults<Document> results = mongoTemplate.aggregate(pipeline, C_COMMENTS, Document.class);
 
-        System.out.println("RESULTS >>>> " + results.getMappedResults());
-
         List<Games> games = new LinkedList<>();
-        List<Document> documents = results.getMappedResults(); 
+        List<Document> documents = results.getMappedResults();
 
         for(Document d: documents) {
+            System.out.println("D >>>> " + d.toString());
             games.add(Games.createGames(d));
         }
-
+        
         GamesResult gamesResult = GamesResult.createGamesResult(order);
         gamesResult.setGames(games);
 
