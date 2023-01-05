@@ -18,5 +18,7 @@ create table order_details (
     product varchar(64) not null, 
     unit_price decimal(3,2) not null, 
     discount decimal (2,1) default 1.0 not null,
-    quantity int not null
+    quantity int not null,
+    order_id int not null,
+    FOREIGN KEY (order_id) references orders(order_id)
 ); 
