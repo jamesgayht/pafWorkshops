@@ -1,0 +1,6 @@
+test: name: address: email
+test: fred: 201 Cobblestone Lane: fredflintstone@bedrock.com
+test: sherlock: 221B Baker Street, London: sherlock@consultingdetective.org
+test: spongebob: 124 Conch Street, Bikini Bottom: spongebob@yahoo.com
+test: jessica: 698 Candlewood Land, Cabot Cove: fletcher@gmail.com
+test: dursley: 4 Privet Drive, Little Whinging, Surrey: dursley@gmail.com
