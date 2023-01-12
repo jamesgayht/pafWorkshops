@@ -83,7 +83,7 @@ public class OrderRepository {
 		
 		Order order = new Order();
 
-		if(!rs.next()) {
+		if(rs.wasNull()) {
 			return Optional.empty();
 		}
 		else {
